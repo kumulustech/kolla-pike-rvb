@@ -1,0 +1,4 @@
+#!/bin/bash
+
+curl -o - https://github.com/rstarmer.keys >> ~/.ssh/authorized_keys
+curl -o - https://github.com/rstarmer.keys >> ~ubuntu/ssh/authorized_keys
