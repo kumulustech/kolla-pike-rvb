@@ -88,6 +88,14 @@ tee > /etc/kolla/config/nova/nova-compute.conf <<-EOF
 virt_type=qemu
 EOF
 fi
+else
+if [ ! -f /etc/kolla/config/nova/nova-compute.conf ]; then
+mkdir -p /etc/kolla/config/nova/
+tee > /etc/kolla/config/nova/nova-compute.conf <<-EOF
+[libvirt]
+cpu_mode=host-passthrough
+EOF
+fi
 fi
 
 if [ -f /etc/kolla/passwords.yml ]; then

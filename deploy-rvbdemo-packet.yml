@@ -3,15 +3,13 @@
   hosts: localhost
   connection: local
   vars:
-    packet_key: 
-    packet_project: 
+    packet_project: 84fe4749-d08b-4042-b722-5573466f35f3
     dnsimple_id: 
     dnsimple_key: 
     build: present
   tasks:
 
   - packet_device:
-      auth_token: "{{packet_key}}"
       project_id: "{{packet_project}}"
       hostnames: [cloud]
       operating_system: ubuntu_16_04
@@ -20,7 +18,6 @@
       state: "{{build}}"
     register: packet_info
   - packet_device:
-      auth_token: "{{packet_key}}"
       project_id: "{{packet_project}}"
       hostnames: [compute1,compute2]
       operating_system: ubuntu_16_04

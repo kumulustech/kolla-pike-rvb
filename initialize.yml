@@ -131,13 +131,13 @@
       creates: /etc/kolla/globals.yml
   - name: create dummy interface
     command: modprobe dummy
+  - name: create dummy interface ext
+    command: ip link set name ext dev dummy0 creates=/etc/modprobe.d/dummy.conf
   - name: ensure dummy on reboot
     lineinfile:
-      line: dummy
+      line: install dummy /sbin/modprobe --ignore-install dummy; /sbin/ip link set name ext dev dummy0
       path: /etc/modprobe.d/dummy.conf
       create: yes
-  - name: create dummy interface ext
-    command: ip link set name ext dev dummy0
   - name: make interface ext permanent
     blockinfile:
       path: /etc/network/interfaces
@@ -146,6 +146,16 @@
           pre-up ip link set name ext dev dummy0
           up ip link set dev ext up
           post-down ip link del dev dummy0
+
+  - name: add nested VM support to the kernel
+    lineinfile:
+      line: options kvm-intel nested=1
+      state: present
+      path: /etc/modprobe.d/kvm-intel.conf
+      create: yes
+  - name: reset kvm module
+    shell:  modprobe -r kvm && modprobe kvm
+    ignore_errors: true
 
 #  - name: label devices
 #    include: labels.yml
